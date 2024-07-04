@@ -17,5 +17,5 @@ const StSchema = new mongoose.Schema(
     }
   );
 
-const StModel = mongoose.model("hotel", StSchema);
+const StModel = mongoose.model("students", StSchema);
 export default StModel;

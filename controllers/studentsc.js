@@ -1,5 +1,5 @@
 import express from "express";
-import StModel from '../models/studentsm.js'
+import StModel from '../models/Studentsm.js'
 import mongoose from "mongoose";
 const router = express.Router();
 
@@ -14,7 +14,7 @@ router.get("/",async(req,res)=>{
         console.log(error);
     }
 });
-// register new hotel via /hotels/register/
+// register new student via /schoold/add
 router.post("/add", async(req,res) => {
     try {
         const {Name, Age, Batch} = req.body;
@@ -22,77 +22,90 @@ router.post("/add", async(req,res) => {
             res.status(400);
             throw new Error("Enter All Fields");
         }
-        const student = await StModel.create(student);
+        const student = await StModel.create({Name, Age, Batch});
         res.status(200).json({student});
     } catch (error) {
         console.log(error);
     }
 });
-// get specific hotel via id -  /hotels/id
-router.get("/get/:id", async (req, res) => {
+
+// get specific student via id -  /get/enter age
+router.get("/getbyage/:Age", async (req, res) => {
     try{
-        const hotel = await hotelModel.findById(req.params.id);
-        if(!hotel) {
+
+        let userage = req.params.Age
+        const Age = await StModel.find({Age:userage})
+        if(!Age) {
             res.status(404);
-            throw new Error("Hotel not found");
+            throw new Error("Student with that age not found");
         }
-        res.status(200).json(hotel);
+        res.status(200).json(Age);
     } catch (err) {
         console.log(err);
     }
 });
 
-// update specific hotel via id by put -  /hotels/id
+
+// get specific Student via id -  /get/id
+router.get("/get/:id", async (req, res) => {
+    try{
+        const st = await StModel.findById(req.params.id);
+        if(!st) {
+            res.status(404);
+            throw new Error("not found");
+        }
+        res.status(200).json(st);
+    } catch (err) {
+        console.log(err);
+    }
+});
+
 
 router.put("/edit/:id", async (req, res) => {
     try {
-        const hotel = await hotelModel.findById(req.params.id);
-        if(!hotel) {
+        const stu = await StModel.findById(req.params.id);
+        if(!stu) {
             res.status(404);
-            throw new Error("Hotel not found");
+            throw new Error("Student not found");
         }
-        const updatedHotel = await hotelModel.findByIdAndUpdate(req.params.id, req.body, {new: true});
-        res.status(200).json({message: updatedHotel});
+        const updatedStudent = await StModel.findByIdAndUpdate(req.params.id, req.body, {new: true});
+        res.status(200).json({message: updatedStudent});
     } catch(err) {
         console.log(err);
     }
 });
-
-// delete a specific hotel via id by put -  /hotels/id
 
 router.delete("/delete/:id", async (req, res) => {
     try {
-        const hotel = await hotelModel.findById(req.params.id);
-        if(!hotel) {
+        const stu = await StModel.findById(req.params.id);
+        if(!stu) {
             res.status(404);
-            throw new Error("Hotel not found");
+            throw new Error("Student not found");
         }
-        await hotelModel.findByIdAndDelete({ _id: req.params.id });
-        res.status(200).json({message: "Hotel successfully deleted."});
+        await StModel.findByIdAndDelete({ _id: req.params.id });
+        res.status(200).json({message: "Student successfully deleted"});
     } catch(err) {
         console.log(err);
     }
 });
 
-//delete all hotels
 router.delete("/delall", async(req, res) => {
     try {
-        await hotelModel.deleteMany();
-        res.status(200).json({message: "All hotels deleted successfully."});
+        await StModel.deleteMany();
+        res.status(200).json({message: "All Students data deleted successfully."});
     } catch(err) {
         console.log(err);
     }
 });
 
-//insert many
 router.post("/insertmany", async (req, res) => {
     const docs = req.body;
     if (!Array.isArray(docs)) {
-        return res.status(400).send('Input should be an array of documents');
+        return res.status(400).send('Input should be an array of Student details');
     }
     try {
-        const result = await hotelModel.insertMany(docs);
-        res.status(200).json({message: `Added ${docs.length} new hotels.`});
+        const result = await StModel.insertMany(docs);
+        res.status(200).json({message: `Added ${docs.length} new Students.`});
     } catch (err) {
         console.log(err);
     }
