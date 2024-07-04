@@ -1,4 +1,4 @@
 {
-    "port":"6000",
-    "DBurl":"mongodb+srv://gouthamgajam:<password>@gouthamcluster1.ovh9hhz.mongodb.net/school"
+    "port":"6060",
+    "DBurl":"mongodb+srv://gouthamgajam:Sahiti%402006@gouthamcluster1.ovh9hhz.mongodb.net/school?retryWrites=true&w=majority"
 }

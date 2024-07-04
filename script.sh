@@ -4,7 +4,10 @@ echo "node_modules" > .gitignore
 cd config
 touch default.json
 cd ..
+cd utils
+touch dbconnect.js
+cd ..
 npm init -y
 touch app.js
-npm install express config axios mongoose
+npm install express config axios mongoose nodemon
  
